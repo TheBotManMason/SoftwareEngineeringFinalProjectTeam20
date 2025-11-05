@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Bio - BakeTrack Project</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Meet Our Team</h1>
+    <img src="img/team-logo.png" alt="Team Logo" class="team-logo">
+
+    <nav>
+        <button onclick="showSection('bios')">Team Bios</button>
+        <button onclick="showSection('vision')">Team Vision</button>
+    </nav>
+</header>
+<div id="bios" class="container">
+    <div class="card">
+        <h2><!-- Name -->Christian Peters Doe</h2>
+        <p><!-- Role -->Product developer</p>
+        <img src="img/ResearchPhoto.jpg" alt="Christian peters photo" class="profile-pic">
+
+        <div class="moodboard">
+            <img src="img/mood1.jpg" alt="Moodboard Image">
+            <a href="https://github.com/cpeter66" target="_blank">GitHub</a>
+        </div>
+
+        <button onclick="toggleBio('bio1')">Show Bio</button>
+        <p id="bio1" class="bio">
+            Christian works on backend API logic and database integration using strengths and experiences with Python and SQL
+
+        </p>
+    </div>
+
+    <!--MEMBER 2 BIO CARD -->
+    <div class="card">
+        <h2>Mason Kuykendall</h2>
+        <p>Scrum Master</p>
+        <img src="img/WIN_20251103_15_44_04_Pro.jpg" alt="Jane Smith Photo" class="profile-pic">
+
+        <div class="moodboard">
+            <img src="img/Design.png" alt="Moodboard Image">
+            <a href="https://github.com/Placeholder" target="_blank">GitHub</a>
+        </div>
+
+        <button onclick="toggleBio('bio2')">Show Bio</button>
+        <p id="bio2" class="bio">
+            Mason help the team work smoothly and does other random assignment stuff
+        </p>
+    </div>
+
+    <!-- MEMBER 3 BIO CARD -->
+    <div class="card">
+        <h2>Evan Reichstetter</h2>
+        <p>Project Manager</p>
+        <img src="img/EvanProfile.png" alt="at Charlotte Whitewater Center" class="profile-pic">
+
+        <div class="moodboard">
+            <img src="img/mood3.png" alt="Moodboard Image">
+            <a href="https://github.com/EvanReichstetter" target="_blank">GitHub</a>
+        </div>
+
+        <button onclick="toggleBio('bio3')">Show Bio</button>
+        <p id="bio3" class="bio">
+            Evan keeps track of what customers want and translates it into user stores using strengths at skimming text and pulling out the important information
+
+        </p>
+    </div>
+
+    <!-- 🔸 MEMBER 4 BIO CARD -->
+    <div class="card">
+        <h2>Placeholder</h2>
+        <p>Placeholder</p>
+        <img src="img/member4.jpg" alt="Alex Brown Photo" class="profile-pic">
+
+        <div class="moodboard">
+            <img src="img/mood4.png" alt="Moodboard Image">
+            <a href="Placeholder" target="_blank">Placeholder</a>
+        </div>
+
+        <button onclick="toggleBio('bio4')">Show Bio</button>
+        <p id="bio4" class="bio">
+            Placeholder
+        </p>
+    </div>
+
+</div>
+
+<!-- 🔹 TEAM VISION / MISSION SECTION -->
+<div id="vision" class="container" style="display: none;">
+    <h2>Our Mission Statement</h2>
+    <p>
+        We are a dedicated software development team focused on creating innovative and reliable solutions that improve user experience.
+        Our goal is to learn collaboratively, apply agile practices, and deliver impactful products through teamwork, creativity, and shared growth.
+    </p>
+
+    <h3>Team Rules and Scrum Values</h3>
+    <ul>
+        <li><strong>Commitment:</strong> Each member will do their best to complete assigned tasks before deadlines, communicate progress, and ask for help when necessary.</li>
+        <li><strong>Courage:</strong> Members will share issues or concerns directly with the group and won’t be afraid to ask for help.</li>
+        <li><strong>Focus:</strong> Team members will share concerns, ask questions, and hold each other to good standards for completing their work.</li>
+        <li><strong>Openness:</strong> Members will report issues and keep the team informed of progress or blockers.</li>
+        <li><strong>Respect:</strong> Every member will value each other’s time, input, and effort.</li>
+    </ul>
+
+    <h3>Team Meetings</h3>
+    <ul>
+        <li><strong>Weekly Meetings:</strong> Mondays</li>
+        <li><strong>Daily Standups:</strong> Afternoon check-ins via text</li>
+        <li><strong>Sprint Review/Retrospective:</strong> At the end of each two-week sprint</li>
+    </ul>
+
+    <h3>Handling Issues</h3>
+    <ul>
+        <li><strong>Falling Behind Schedule:</strong> The Scrum Master will review sprint progress and redistribute tasks. The Product Owner will adjust backlog priorities if needed.</li>
+        <li><strong>Uncooperative Team Member:</strong> The Scrum Master and Product Owner will meet privately with the member. If no improvement occurs, the instructor will be informed.</li>
+    </ul>
+
+    <h2>Project Overview: BakeTrack API</h2>
+    <p>
+        The BakeTrack API will serve as a complete backend solution for a bakery’s online ordering process,
+        supporting both staff and customer operations through a RESTful, database-driven architecture.
+    </p>
+
+    <h3>Project Goal</h3>
+    <p>
+        Develop an API that supports all core bakery operations: order management, menu control, ingredient tracking, and customer feedback.
+    </p>
+
+    <h3>Primary Functions</h3>
+    <h4>Staff Perspective</h4>
+    <ul>
+        <li>Create, update, and delete menu items.</li>
+        <li>Monitor inventory and receive low-stock alerts.</li>
+        <li>View all orders or specific order details.</li>
+        <li>Track dish popularity and review summaries.</li>
+        <li>Manage promotions and expiration dates.</li>
+        <li>View revenue and order history by date range.</li>
+    </ul>
+
+    <h4>Customer Perspective</h4>
+    <ul>
+        <li>Place orders as guests.</li>
+        <li>Select delivery or pickup options.</li>
+        <li>Pay for orders and track order status.</li>
+        <li>Search menu items by type or dietary preference.</li>
+        <li>Submit reviews and ratings.</li>
+        <li>Apply promotional codes.</li>
+    </ul>
+
+    <h3>Technical Scope</h3>
+    <p><strong>Architecture:</strong> BakeTrack follows a RESTful design using SQLAlchemy with a MySQL database. Swagger UI is used for documentation and testing.</p>
+
+    <p><strong>Core Tables:</strong> menu_items, orders, order_items, customers, reviews, promotions, ingredients, staff, inventory</p>
+
+    <p><strong>Planned Features:</strong></p>
+    <ul>
+        <li>CRUD for all core tables</li>
+        <li>Inventory checks before confirming orders</li>
+        <li>Data reporting endpoints (revenue, popular items)</li>
+        <li>Unit testing with pytest</li>
+        <li>Preloaded test data for demonstrations</li>
+    </ul>
+
+    <h3>Conclusion</h3>
+    <p>
+        The BakeTrack API will provide a strong backend foundation for a bakery’s operations.
+        Through Scrum values, communication, and collaboration, the team will ensure consistent progress and maintain code quality.
+    </p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+g
