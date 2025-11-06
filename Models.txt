@@ -1,0 +1,59 @@
+Customer Model
+Id int Primary key
+name 
+email 
+phone
+orders
+reviews 
+
+
+Menu Items Model
+id int primary key
+name
+description
+price 
+available
+order_items
+reviews 
+
+Order Models 
+It int primary key
+customer_id
+total_amount
+status
+order_type 
+created_at
+customer 
+items 
+
+Order Items Model
+id int primary key 
+order_id
+menu_item_id
+quantity
+subtotal
+order
+menu_item
+
+Promotions Models 
+id int Primary Key
+code 
+discount_percent 
+expiration date 
+active 
+
+Reviews Models 
+id int Primary key
+customer_id 
+menu_item_id
+rating 
+comment 
+created_at
+customer 
+menu_item
+
+Inventory Model
+id int primary key
+item_name
+quantity
+
