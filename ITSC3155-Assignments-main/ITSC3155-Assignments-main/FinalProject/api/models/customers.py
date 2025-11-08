@@ -12,5 +12,5 @@ class Customer(Base):
     email = Column(String(100), unique=True, nullable=True)
     phone_number = Column(String(20), nullable=True)
     orders = relationship("Order", back_populates="customer")
-    reviews = relationship("Review", back_populates="customer)
+    reviews = relationship("Review", back_populates="customer")
     
