@@ -11,5 +11,5 @@ class MenuItem(Base):
     description = Column(String(500), nullable=True)
     price = Column(DECIMAL(10,2), nullable=False)
     available = Column(Boolean, nullable=False, default=True)
-    order_items = relationship("OrderItem", back_populates="menuitem")
-    reviews = relationship("Review", back_populates="menuitem")
+    order_items = relationship("OrderItem", back_populates="menu_items")
+    reviews = relationship("Review", back_populates="menu_items")

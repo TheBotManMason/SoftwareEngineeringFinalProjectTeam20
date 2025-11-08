@@ -14,5 +14,5 @@ class Order(Base):
     order_type = Column(String(50))
     created_at = Column(DATETIME, nullable=False, server_default=str(datetime.now()))
 
-    customer = relationship("Customer", back_populates="order")
-    order_items = relationship("OrderItem", back_populates="order")
+    customer = relationship("Customer", back_populates="orders")
+    order_items = relationship("OrderItem", back_populates="orders")
