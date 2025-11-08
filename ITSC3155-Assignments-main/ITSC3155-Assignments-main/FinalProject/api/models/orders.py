@@ -12,7 +12,7 @@ class Order(Base):
     total_amount = Column(DECIMAL(10,2),nullable=False)
     status = Column(String(50), nullable=False)
     order_type = Column(String(50))
-    created_at = Column(DATETIME, nullable=False, server_default=str(datetime.now()))
+    created_at = Column(DATETIME, nullable=False, default=str(datetime.now()))
 
     customer = relationship("Customer", back_populates="orders")
     order_items = relationship("OrderItem", back_populates="orders")
