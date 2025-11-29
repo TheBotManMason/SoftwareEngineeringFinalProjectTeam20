@@ -1,26 +1,24 @@
 from datetime import datetime
-from typing import Optional
 from pydantic import BaseModel
-
 
 class CustomerBase(BaseModel):
     name: str
-    email: Optional[str] = None
-    phone: Optional[str] = None
-
+    phone: str
+    email: str = None
+    address: str = None
 
 class CustomerCreate(CustomerBase):
     pass
 
-
 class CustomerUpdate(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
-    phone: Optional[str] = None
+    name: str = None
+    phone: str = None
+    email: str = None
+    address: str = None
 
-
-class Sandwich(SandwichBase):
+class Customer(CustomerBase):
     id: int
+    created_at: datetime
 
-    class ConfigDict:
+    class Config:
         from_attributes = True
