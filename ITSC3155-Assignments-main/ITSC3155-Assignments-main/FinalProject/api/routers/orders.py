@@ -1,35 +1,45 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from ..controllers import orders as controller
-from ..schemas import order as schema
+from ..controllers import ordercontroller
+from ..schemas import order
 from ..dependencies.database import get_db
 
-router = APIRouter(tags=['Orders'], prefix="/orders")
+router = APIRouter(
+    tags=['Orders'],
+    prefix="/orders"
+)
 
-@router.post("/", response_model=schema.Order)
-def create(request: schema.OrderCreate, db: Session = Depends(get_db)):
-    return controller.create(db=db, request=request)
 
-@router.get("/", response_model=list[schema.Order])
+@router.post("/", response_model=order.Order)
+def create(request: order.OrderCreate, db: Session = Depends(get_db)):
+    return ordercontroller.create(db=db, request=request)
+
+
+@router.get("/", response_model=list[order.Order])
 def read_all(db: Session = Depends(get_db)):
-    return controller.read_all(db)
+    return ordercontroller.read_all(db)
 
-@router.get("/{item_id}", response_model=schema.Order)
+
+@router.get("/{item_id}", response_model=order.Order)
 def read_one(item_id: int, db: Session = Depends(get_db)):
-    return controller.read_one(db, item_id=item_id)
+    return ordercontroller.read_one(db, item_id=item_id)
 
-@router.get("/track/{tracking_number}", response_model=schema.Order)
-def read_one(tracking_number: str, db: Session = Depends(get_db)):
-    return controller.get_by_tracking(db, tracking_number=tracking_number)
 
-@router.put("/{item_id}", response_model=schema.Order)
-def update(item_id: int, request: schema.OrderUpdate, db: Session = Depends(get_db)):
-    return controller.update(db=db, item_id=item_id, request=request)
+@router.get("/track/{tracking_number}", response_model=order.Order)
+def track_order(tracking_number: str, db: Session = Depends(get_db)):
+    return ordercontroller.get_by_tracking(db, tracking_number=tracking_number)
 
-@router.put("/{item_id}/status", response_model=schema.Order)
+
+@router.put("/{item_id}", response_model=order.Order)
+def update(item_id: int, request: order.OrderUpdate, db: Session = Depends(get_db)):
+    return ordercontroller.update(db=db, item_id=item_id, request=request)
+
+
+@router.put("/{item_id}/status", response_model=order.Order)
 def update_status(item_id: int, status: str, db: Session = Depends(get_db)):
-    return controller.update_status(db, item_id=item_id, status=status)
+    return ordercontroller.update_status(db, item_id=item_id, status=status)
+
 
 @router.delete("/{item_id}")
 def delete(item_id: int, db: Session = Depends(get_db)):
-    return controller.delete(db=db, item_id=item_id)
+    return ordercontroller.delete(db=db, item_id=item_id)

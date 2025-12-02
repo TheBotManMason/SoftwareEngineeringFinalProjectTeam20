@@ -1,15 +1,22 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Response
-from ..models import order_items as model
+from ..models import ingredients
 from sqlalchemy.exc import SQLAlchemyError
 
 
 def create(db: Session, request):
-    new_item = model.OrderItem(
-        order_id=request.order_id,
-        menu_item_id=request.menu_item_id,
-        quantity=request.quantity,
-        price=request.price
+    existing_ingredient = db.query(ingredients.Ingredient).filter(ingredients.Ingredient.name == request.name).first()
+    if existing_ingredient:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Ingredient with this name already exists!"
+        )
+
+    new_item = ingredients.Ingredient(
+        name=request.name,
+        unit=request.unit,
+        current_stock=request.current_stock,
+        min_stock=request.min_stock
     )
 
     try:
@@ -25,16 +32,16 @@ def create(db: Session, request):
 
 def read_all(db: Session):
     try:
-        result = db.query(model.OrderItem).all()
+        result = db.query(ingredients.Ingredient).all()
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
     return result
 
 
-def read_one(db: Session, item_id: int):
+def read_one(db: Session, item_id):
     try:
-        item = db.query(model.OrderItem).filter(model.OrderItem.id == item_id).first()
+        item = db.query(ingredients.Ingredient).filter(ingredients.Ingredient.id == item_id).first()
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
     except SQLAlchemyError as e:
@@ -43,11 +50,24 @@ def read_one(db: Session, item_id: int):
     return item
 
 
-def update(db: Session, item_id: int, request):
+def update(db: Session, item_id, request):
     try:
-        item = db.query(model.OrderItem).filter(model.OrderItem.id == item_id)
+        item = db.query(ingredients.Ingredient).filter(ingredients.Ingredient.id == item_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
+
+        # Check if name is being updated and if it conflicts
+        if request.name:
+            existing_ingredient = db.query(ingredients.Ingredient).filter(
+                ingredients.Ingredient.name == request.name,
+                ingredients.Ingredient.id != item_id
+            ).first()
+            if existing_ingredient:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Another ingredient with this name already exists!"
+                )
+
         update_data = request.dict(exclude_unset=True)
         item.update(update_data, synchronize_session=False)
         db.commit()
@@ -57,9 +77,9 @@ def update(db: Session, item_id: int, request):
     return item.first()
 
 
-def delete(db: Session, item_id: int):
+def delete(db: Session, item_id):
     try:
-        item = db.query(model.OrderItem).filter(model.OrderItem.id == item_id)
+        item = db.query(ingredients.Ingredient).filter(ingredients.Ingredient.id == item_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         item.delete(synchronize_session=False)

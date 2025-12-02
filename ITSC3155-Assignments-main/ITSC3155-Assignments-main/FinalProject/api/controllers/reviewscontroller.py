@@ -1,20 +1,23 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Response
-from ..models import customers as model
+from ..models import reviews
 from sqlalchemy.exc import SQLAlchemyError
 
 
 def create(db: Session, request):
-    # Check if phone already exists
-    existing_customer = db.query(model.Customer).filter(model.Customer.phone == request.phone).first()
-    if existing_customer:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Customer with this phone already exists!")
+    # Validate rating is between 1-5
+    if not 1 <= request.rating <= 5:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Rating must be between 1 and 5"
+        )
 
-    new_item = model.Customer(
-        name=request.name,
-        phone=request.phone,
-        email=request.email,
-        address=request.address
+    new_item = reviews.Review(
+        order_id=request.order_id,
+        menu_item_id=request.menu_item_id,
+        customer_name=request.customer_name,
+        rating=request.rating,
+        comment=request.comment
     )
 
     try:
@@ -28,18 +31,21 @@ def create(db: Session, request):
     return new_item
 
 
-def read_all(db: Session):
+def read_all(db: Session, menu_item_id: int = None):
     try:
-        result = db.query(model.Customer).all()
+        if menu_item_id:
+            result = db.query(reviews.Review).filter(reviews.Review.menu_item_id == menu_item_id).all()
+        else:
+            result = db.query(reviews.Review).all()
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
     return result
 
 
-def read_one(db: Session, item_id):
+def read_one(db: Session, item_id: int):
     try:
-        item = db.query(model.Customer).filter(model.Customer.id == item_id).first()
+        item = db.query(reviews.Review).filter(reviews.Review.id == item_id).first()
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
     except SQLAlchemyError as e:
@@ -48,21 +54,18 @@ def read_one(db: Session, item_id):
     return item
 
 
-def update(db: Session, item_id, request):
+def update(db: Session, item_id: int, request):
     try:
-        item = db.query(model.Customer).filter(model.Customer.id == item_id)
+        item = db.query(reviews.Review).filter(reviews.Review.id == item_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
 
-        # Check if phone is being updated and if it conflicts with existing customer
-        if request.phone:
-            existing_customer = db.query(model.Customer).filter(
-                model.Customer.phone == request.phone,
-                model.Customer.id != item_id
-            ).first()
-            if existing_customer:
-                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                                    detail="Another customer with this phone already exists!")
+        # Validate rating if being updated
+        if request.rating is not None and not 1 <= request.rating <= 5:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Rating must be between 1 and 5"
+            )
 
         update_data = request.dict(exclude_unset=True)
         item.update(update_data, synchronize_session=False)
@@ -73,9 +76,9 @@ def update(db: Session, item_id, request):
     return item.first()
 
 
-def delete(db: Session, item_id):
+def delete(db: Session, item_id: int):
     try:
-        item = db.query(model.Customer).filter(model.Customer.id == item_id)
+        item = db.query(reviews.Review).filter(reviews.Review.id == item_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         item.delete(synchronize_session=False)

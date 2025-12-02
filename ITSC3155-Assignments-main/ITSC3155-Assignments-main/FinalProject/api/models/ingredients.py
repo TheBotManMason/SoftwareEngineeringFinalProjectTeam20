@@ -10,4 +10,4 @@ class Ingredient(Base):
     name = Column(String(100), unique=True, nullable=False)
     unit = Column(String(20), nullable=False)
     current_stock = Column(Integer, default=0.0)
-    min_stock = Column(Integer, default=10.0)
+    min_stock = Column(Integer, default=10)

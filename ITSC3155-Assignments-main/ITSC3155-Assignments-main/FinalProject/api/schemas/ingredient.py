@@ -12,8 +12,8 @@ class IngredientCreate(IngredientBase):
 class IngredientUpdate(BaseModel):
     name: str = None
     unit: str = None
-    current_stock: float = None
-    min_stock: float = None
+    current_stock: int = None
+    min_stock: int = None
 
 class Ingredient(IngredientBase):
     id: int
